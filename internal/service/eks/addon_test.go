@@ -421,14 +421,14 @@ func TestAccEKSAddon_namespace(t *testing.T) {
 				Config: testAccAddonConfig_namespace(rName, addonName, namespace),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckAddonExists(ctx, resourceName, &addon),
-					resource.TestCheckResourceAttr(resourceName, "namespace", namespace),
+					resource.TestCheckResourceAttr(resourceName, names.AttrNamespace, namespace),
 				),
 			},
 			{
 				ResourceName:            resourceName,
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"namespace"},
+				ImportStateVerifyIgnore: []string{names.AttrNamespace},
 			},
 		},
 	})

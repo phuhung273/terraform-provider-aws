@@ -127,7 +127,7 @@ func resourceAddon() *schema.Resource {
 				Optional:     true,
 				ValidateFunc: verify.ValidARN,
 			},
-			"namespace": {
+			names.AttrNamespace: {
 				Type:     schema.TypeString,
 				Optional: true,
 			},
@@ -171,7 +171,7 @@ func resourceAddonCreate(ctx context.Context, d *schema.ResourceData, meta any) 
 		input.ServiceAccountRoleArn = aws.String(v.(string))
 	}
 
-	if v, ok := d.GetOk("namespace"); ok {
+	if v, ok := d.GetOk(names.AttrNamespace); ok {
 		input.NamespaceConfig = &types.AddonNamespaceConfigRequest{
 			Namespace: aws.String(v.(string)),
 		}
@@ -253,7 +253,7 @@ func resourceAddonRead(ctx context.Context, d *schema.ResourceData, meta any) di
 		return sdkdiag.AppendErrorf(diags, "setting pod_identity_association: %s", err)
 	}
 	d.Set("service_account_role_arn", addon.ServiceAccountRoleArn)
-	d.Set("namespace", d.Get("namespace")) // Create-only.
+	d.Set(names.AttrNamespace, d.Get(names.AttrNamespace)) // Create-only.
 
 	setTagsOut(ctx, addon.Tags)
 
